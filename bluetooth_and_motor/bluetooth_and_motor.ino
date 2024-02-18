@@ -50,6 +50,7 @@ int prevPulse = 0;
 
 int prevstate = 0;
 int state = 0;
+int pressedState = 0;
 SoftwareSerial bluetoothSerial(rxPin, txPin); // RX, TX
 
 void onTouch() {
@@ -80,11 +81,10 @@ void setup() {
 void loop() {
   if (digitalRead(touchPin) == 0)
   {
-    analogWrite(pwmPin, 255);
-    //Serial.print("TOUCH");
+    pressedState = 1;
   }
   else {
-    analogWrite(pwmPin, 0);
+    pressedState = 0;
   }
 
   /*if (digitalRead(touchPin) == HIGH){
@@ -97,13 +97,11 @@ void loop() {
     state = bluetoothSerial.read();
     //Serial.println(state);
   }
-  if (state != prevstate)
+  if (state != prevstate && !pressedState)
   {
     //Serial.println(state);
     prevstate = state;
     handleState();
-
-
   }
 
   digitalWrite(in1Pin, dir);
